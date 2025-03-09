@@ -1,4 +1,4 @@
-namespace NeoVortex.Application.Interfaces.Auth;
+namespace NeoVortex.Application.Interfaces.Services;
 
 public interface IPasswordService
 {

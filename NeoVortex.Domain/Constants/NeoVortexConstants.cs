@@ -4,5 +4,7 @@ public static class NeoVortexConstants
 {
     public const string PermissionsClaim = "permissions";
 
-    public const string SuperAccessPermission = "superAccess";
+    public const string SuperAccessPermission = "superAdmin";
+    
+    public const string UserRole = "Usuario";
 }

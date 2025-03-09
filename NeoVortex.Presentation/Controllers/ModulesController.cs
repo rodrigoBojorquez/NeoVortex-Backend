@@ -5,11 +5,11 @@ using NeoVortex.Presentation.Common.Controllers;
 
 namespace NeoVortex.Presentation.Controllers;
 
-public class ModuleController : ApiController
+public class ModulesController : ApiController
 {
     private readonly IModuleRepository _moduleRepository;
 
-    public ModuleController(IModuleRepository moduleRepository)
+    public ModulesController(IModuleRepository moduleRepository)
     {
         _moduleRepository = moduleRepository;
     }

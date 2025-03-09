@@ -1,8 +1,7 @@
-using System.Security.Claims;
 using ErrorOr;
 using NeoVortex.Application.User.Common;
 
-namespace NeoVortex.Application.Interfaces.Auth;
+namespace NeoVortex.Application.Interfaces.Services;
 
 public interface ITokenService
 {

@@ -10,12 +10,12 @@ using NeoVortex.Presentation.Common.Controllers;
 
 namespace NeoVortex.Presentation.Controllers;
 
-public class RoleController : ApiController
+public class RolesController : ApiController
 {
     private readonly IMediator _mediator;
     private readonly IRoleRepository _roleRepository;
 
-    public RoleController(IMediator mediator, IRoleRepository roleRepository)
+    public RolesController(IMediator mediator, IRoleRepository roleRepository)
     {
         _mediator = mediator;
         _roleRepository = roleRepository;

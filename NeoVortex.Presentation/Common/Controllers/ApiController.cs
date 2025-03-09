@@ -29,7 +29,7 @@ public class ApiController : ControllerBase
 
         HttpContext.Items["Errors"] = JsonSerializer.Serialize(errors);
 
-        return Problem(errors.ToList());
+        return Problem(errors[0]);
     }
 
     protected IActionResult Problem(Error error)

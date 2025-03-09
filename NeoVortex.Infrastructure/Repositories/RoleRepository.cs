@@ -1,5 +1,7 @@
+using System.Linq.Expressions;
 using ErrorOr;
 using Microsoft.EntityFrameworkCore;
+using NeoVortex.Application.Common.Results;
 using NeoVortex.Application.Interfaces.Repositories;
 using NeoVortex.Domain.Entities;
 using NeoVortex.Domain.Errors;
@@ -13,12 +15,18 @@ public class RoleRepository : GenericRepository<Role>, IRoleRepository
     {
     }
 
-    public async Task<Role> GetByUserIdAsync(Guid userId)
+    public async Task<Role?> GetByUserIdAsync(Guid userId)
     {
         return (await Context.Users
             .Where(u => u.Id == userId)
             .Select(u => u.Role)
-            .FirstOrDefaultAsync()) ?? null!;
+            .FirstOrDefaultAsync());
+    }
+
+    public Task<Role?> GetRoleByNameAsync(string roleName)
+    {
+        return Context.Roles
+            .FirstOrDefaultAsync(r => r.Name == roleName);
     }
 
     public async Task<ErrorOr<Created>> AssignPermissionsAsync(Guid roleId, List<Guid> permissionIds)
@@ -55,5 +63,23 @@ public class RoleRepository : GenericRepository<Role>, IRoleRepository
         await Context.SaveChangesAsync();
 
         return Result.Created;
+    }
+
+    public new async Task<ErrorOr<ListResult<Role>>> ListAsync(int page = 1, int pageSize = 10, Expression<Func<Role, bool>>? filter = null)
+    {
+        var query = Context.Roles
+            .Include(x => x.Permissions) // Asegurar que se carguen los permisos
+            .AsQueryable();
+
+        if (filter is not null)
+            query = query.Where(filter);
+
+        var totalItems = await query.CountAsync();
+        var items = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new ListResult<Role>(page, pageSize, totalItems, items);
     }
 }

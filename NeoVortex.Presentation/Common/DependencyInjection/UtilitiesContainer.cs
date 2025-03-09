@@ -1,4 +1,4 @@
-using NeoVortex.Application.Interfaces.Auth;
+using NeoVortex.Application.Interfaces.Services;
 using NeoVortex.Presentation.Utilities;
 
 namespace NeoVortex.Presentation.Common.DependencyInjection;

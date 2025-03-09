@@ -1,7 +1,7 @@
 using ErrorOr;
 using MediatR;
-using NeoVortex.Application.Interfaces.Auth;
 using NeoVortex.Application.Interfaces.Repositories;
+using NeoVortex.Application.Interfaces.Services;
 using NeoVortex.Application.User.Common;
 using NeoVortex.Domain.Errors;
 
@@ -39,7 +39,6 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<AuthResult>
         var token = await _tokenService.GenerateTokenAsync(user);
         var refreshToken = _tokenService.GenerateRefreshToken();
         
-        // Se almacena el Refresh Token en la base de datos
         await _tokenService.StoreRefreshTokenAsync(refreshToken, user.Id);
         
         return new AuthResult(token, refreshToken);

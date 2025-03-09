@@ -11,13 +11,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="User\Commands\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="FluentValidation" Version="11.11.0" />
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
       <PackageReference Include="MediatR" Version="12.4.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.StaticFiles">
+        <HintPath>..\..\..\..\..\..\..\..\usr\lib64\dotnet\shared\Microsoft.AspNetCore.App\9.0.2\Microsoft.AspNetCore.StaticFiles.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

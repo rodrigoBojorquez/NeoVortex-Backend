@@ -2,7 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NeoVortex.Application.Common.Auth;
-using NeoVortex.Application.Interfaces.Auth;
+using NeoVortex.Application.Interfaces.Services;
+using NeoVortex.Application.User.Commands.Register;
 using NeoVortex.Application.User.Queries.Login;
 using NeoVortex.Domain.Errors;
 using NeoVortex.Presentation.Common.Controllers;
@@ -26,10 +27,8 @@ public class AuthController : ApiController
 
     public record LoginRequest(string Email, string Password);
 
-    public record RegisterRequest(string Email, string Password, string Name);
+    public record RegisterRequest(string Name, string Email, string Password);
     
-    public record LogoutRequest(string RefreshToken);
-
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
@@ -47,7 +46,14 @@ public class AuthController : ApiController
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
-        return Ok();
+        var command = new RegisterCommand(request.Name, request.Email, request.Password);
+        var result = await _mediator.Send(command);
+        
+        return result.Match(authResult =>
+        {
+            _authUtilities.SetRefreshToken(authResult.RefreshToken);
+            return Ok(new AccessToken(authResult.AccessToken));
+        }, Problem);
     }
 
     [HttpPost("refresh-token")]
@@ -69,9 +75,12 @@ public class AuthController : ApiController
     }
 
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout(LogoutRequest request)
+    public async Task<IActionResult> Logout()
     {
-        await _tokenService.DeleteRefreshTokenAsync(request.RefreshToken);
+        if (!Request.Cookies.TryGetValue("refreshToken", out var refreshToken) || string.IsNullOrEmpty(refreshToken))
+            return Problem(Errors.User.MissingRefreshToken);
+        
+        await _tokenService.DeleteRefreshTokenAsync(refreshToken);
         return Ok();
     }
     

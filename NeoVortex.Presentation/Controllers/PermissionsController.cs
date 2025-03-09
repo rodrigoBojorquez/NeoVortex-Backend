@@ -4,11 +4,11 @@ using NeoVortex.Presentation.Common.Controllers;
 
 namespace NeoVortex.Presentation.Controllers;
 
-public class PermissionController : ApiController
+public class PermissionsController : ApiController
 {
     private readonly IPermissionRepository _permissionRepository;
 
-    public PermissionController(IPermissionRepository permissionRepository)
+    public PermissionsController(IPermissionRepository permissionRepository)
     {
         _permissionRepository = permissionRepository;
     }

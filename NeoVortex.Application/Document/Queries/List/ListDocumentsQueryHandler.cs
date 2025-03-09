@@ -2,8 +2,8 @@ using ErrorOr;
 using MediatR;
 using NeoVortex.Application.Common.Results;
 using NeoVortex.Application.Document.Common;
-using NeoVortex.Application.Interfaces.Auth;
 using NeoVortex.Application.Interfaces.Repositories;
+using NeoVortex.Application.Interfaces.Services;
 using NeoVortex.Domain.Errors;
 
 namespace NeoVortex.Application.Document.Queries.List;

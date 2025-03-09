@@ -1,3 +1,4 @@
+using Microsoft.Extensions.FileProviders;
 using NeoVortex.Application.Common.DepedencyInjection;
 using NeoVortex.Infrastructure.Common.DependencyInjection;
 using NeoVortex.Presentation.Common.DependencyInjection;
@@ -22,9 +23,21 @@ var app = builder.Build();
 
 await app.UseTriggerSeeder();
 
-app.UseCors(config => { config.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
+app.UseCors(config => { config.WithOrigins("http://localhost:5173", "http://127.0.0.1:9980").AllowAnyMethod().AllowAnyHeader().AllowCredentials(); });
 app.MapOpenApi();
 app.UseSwaggerUI(config => { config.SwaggerEndpoint("/openapi/v1.json", "NeoVortex API"); });
+
+var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "assets", "images");
+if (!Directory.Exists(imagesPath))
+{
+    Directory.CreateDirectory(imagesPath);
+}
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(imagesPath),
+    RequestPath = "/images"
+});
 
 app.UseHttpsRedirection();
 app.UseGlobalExceptionHandler();

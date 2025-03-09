@@ -1,14 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NeoVortex.Application.Interfaces.Auth;
 using NeoVortex.Application.Interfaces.Repositories;
+using NeoVortex.Application.Interfaces.Services;
 using NeoVortex.Infrastructure.Common.Auth;
 using NeoVortex.Infrastructure.Common.Logging;
 using NeoVortex.Infrastructure.Data;
 using NeoVortex.Infrastructure.Data.Seeders;
 using NeoVortex.Infrastructure.Repositories;
+using NeoVortex.Infrastructure.Services.Assets;
 using NeoVortex.Infrastructure.Services.Auth;
+using NeoVortex.Infrastructure.Services.Files;
 
 namespace NeoVortex.Infrastructure.Common.DependencyInjection;
 
@@ -32,9 +34,13 @@ public static class ServiceContainer
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IModuleRepository, ModuleRepository>();
         services.AddScoped<IDocumentRepository, DocumentRepository>();
+        services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         services.AddScoped<IPasswordService, PasswordService>();
         services.AddScoped<ITokenService, JwtService>();
+        services.AddScoped<IFileService, FileService>();
+        services.AddScoped<IImageService, ImageService>();
 
         return services;
     }
